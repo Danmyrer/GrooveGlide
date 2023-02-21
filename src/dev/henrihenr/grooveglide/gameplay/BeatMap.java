@@ -28,8 +28,9 @@ public class BeatMap implements BeatChart, GameConfig
     public final int bpm;
     public final String beatMapArtist;
 
-    private final HashMap<String,String> config;
-    private final HashMap<String,String> charts;
+    public final HashMap<String,String> mapConfig;
+    public final HashMap<String,String> mapCharts;
+    public HashMap<String,String> chartConfig;
 
     //public final int offset;
 
@@ -49,23 +50,23 @@ public class BeatMap implements BeatChart, GameConfig
         Path configPath = getPath(CONFIG_NAME);
         String[] configString = Files.readString(configPath).split("\n");
         
-        this.config = getConfMap(configString);
-        this.charts = getChartsMap(configString);
+        this.mapConfig = getConfMap(configString);
+        this.mapCharts = getChartsMap(configString);
 
-        this.songName = this.config.get("SONG_NAME");
-        this.songArtist = this.config.get("SONG_ARTIST");
-        this.bpm = Integer.valueOf(this.config.get("SONG_BPM"));
-        this.songPath = getPath(this.config.get("SONG_FILE"));
-        this.beatMapArtist = this.config.get("BEATMAP_ARTIST");
+        this.songName = this.mapConfig.get("SONG_NAME");
+        this.songArtist = this.mapConfig.get("SONG_ARTIST");
+        this.bpm = Integer.valueOf(this.mapConfig.get("SONG_BPM"));
+        this.songPath = getPath(this.mapConfig.get("SONG_FILE"));
+        this.beatMapArtist = this.mapConfig.get("BEATMAP_ARTIST");
     }
 
     @Override
     public List<List<HitObject>> buildChart(String name) throws IOException
     {
-        Path chartPath = getPath(charts.get(name));
+        Path chartPath = getPath(mapCharts.get(name));
         String[] chartString = Files.readString(chartPath).split("\n");
 
-        HashMap<String,String> chartConfig = getConfMap(chartString);
+        this.chartConfig = getConfMap(chartString);
 
         long hitObjectOffset = 0;//Long.valueOf(chartConfig.get("MAP_OFFSET")); // FIXME ACHTUNG wird gerade von HitObjectStackk überschrieben (weil map offset technically nicht das selbe wie ho Offset ist)
 

@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import dev.henrihenr.game2d.Game;
 import dev.henrihenr.game2d.GameObj;
 import dev.henrihenr.game2d.SwingScreen;
@@ -17,10 +19,10 @@ import dev.henrihenr.grooveglide.gameplay.BeatMap;
 import dev.henrihenr.grooveglide.gameplay.Health;
 import dev.henrihenr.grooveglide.gameplay.Score;
 import dev.henrihenr.grooveglide.util.Beat;
+import dev.henrihenr.grooveglide.util.BeatTimer;
 import dev.henrihenr.grooveglide.util.Color;
 import dev.henrihenr.grooveglide.util.HitObjectStack;
 import dev.henrihenr.grooveglide.util.Judgement;
-import dev.henrihenr.grooveglide.util.Time;
 import dev.henrihenr.grooveglide.util.drawables.Background;
 import dev.henrihenr.grooveglide.util.drawables.HitObject;
 import dev.henrihenr.grooveglide.util.drawables.Hitline;
@@ -47,7 +49,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     private HitObjectStack hitObjectStack;
     private final List<SoundEffect> hitSounds;
     private Music music;
-    private Time time;
+    private BeatTimer beatTime;
 
     private final Health health;
     private final Score score;
@@ -59,6 +61,8 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
      * Standart-Konstruktor. Das spiel kann mit {@code new Main(path, diff).play()} gestartet werden
      * @param beatMapPath   Pfad zu dem Verzeichnis der Beatmap (wo sich die Config Befindet)
      * @param difficulty    Auswahl der Chart / Schwierigkeit einer Beatmap. Eine Beatmap kann verschiedene Charts haben
+     * 
+     * TODO Playfield interface in eine eigene klasse umschreiben, sodass u.a lane variabel sein kann
      */
     GrooveGlide(Path beatMapPath, String difficulty)
     {
@@ -77,9 +81,9 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         try
         {
             BeatMap beatMap = new BeatMap(beatMapPath);
-            //this.hitObjects = beatMap.buildChart(difficulty);
             this.hitObjectStack = new HitObjectStack(beatMap.buildChart(difficulty));
             this.music = new Music(beatMap.songPath, 0);
+            this.beatTime = new BeatTimer(this).setStartOffset(Integer.valueOf(beatMap.chartConfig.get("MAP_OFFSET"))).setBeatMS(Math.round(60000 / (double)beatMap.bpm)).initTimer();
         }
         catch (IOException e)
         {
@@ -134,7 +138,6 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         handleMove(Hitline.Direction.CENTER); // bewegt die Hitline für den Anfang in die Mitte
 
         initHitSound();
-        initTime();
     }
 
     /**
@@ -160,7 +163,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
      */
     private void initHitObject()
     {
-        for (int i = 0; i < LANES; i++)
+        for (int i = 0; i < 6; i++)
         {
             hitObjects.add(new ArrayList<HitObject>());
             goss.add(hitObjects.get(i));
@@ -175,7 +178,6 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         goss.add(keyPressedGlow);
         for (int i = 0; i < 4; i++)
         {
-            System.out.println(i);
             keyPressedGlow.add(new KeyPressedGlow(0, i));
         }
     }
@@ -189,12 +191,6 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         {
             hitSounds.add(new SoundEffect(SOUND_CLICK, 5));
         }
-    }
-
-    private void initTime()
-    {
-        this.time = new Time(this).initTimer();
-        time.startTimer();
     }
 
     @Override
@@ -211,7 +207,9 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         }
         catch(InterruptedException e) { e.printStackTrace(); }
         
+        System.out.println(beatTime.toString());
         music.start();
+        beatTime.start();
         screen.setState(State.ACTIVE);
     }
 
@@ -219,14 +217,25 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     public void doChecks()
     {
         hitChecks();
-        winStateChecks();
+        if (this.beatTime.getBeat() > 1) winStateChecks();
     }
 
     @Override
     public void onBeat(int beat)
     {
-        System.out.println(beat);
-        hitObjects.addAll(hitObjectStack.getNewHitObjecs(beat));
+        hitSounds.get(0).play();
+        List<List<HitObject>> hos = hitObjectStack.getNewHitObjecs(beat);
+        for (int i = 0; i < hos.size(); i++) 
+        {
+            final int fi = i;
+            SwingUtilities.invokeLater(new Runnable() { // der timer für onbeat läuft nicht auf dem EDT (swing main thread)
+                @Override
+                public void run()
+                {
+                    hitObjects.get(fi).addAll(hos.get(fi));
+                }
+            });
+        }
     }
 
     private void hitChecks()
@@ -381,8 +390,10 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         Judgement.moveLaneOffset(dir);
     }
 
+    @SuppressWarnings("unused")
     private void printGameInfo(Judgement judgement)
     {
+        if(true) return; // FIXME wieder aktivieren wenn nötig
         clearConsole();
 
         System.out.println((int)(health.getHealth() * 100) + "% HP");
@@ -426,13 +437,18 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     @Override
     public boolean lost()
     {
-        //return false;
-        return this.winState == WinState.LOST;
+        return false;
+        //return this.winState == WinState.LOST;
     }
 
     public static void main(String[] args) 
     {
-        new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON").play();
+        //new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON").play();
+        new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "NORMAL").play();
+        //new GrooveGlide(Path.of("maps/Camellia - Clouds in the Blue (Asherz007)(m2g)"), "INSANE").play();
+        //new GrooveGlide(Path.of("maps/Camellia - Embracing intelligences (Leniane)(m2g)"), "ACCEPTANCE").play();
+        //new GrooveGlide(Path.of("maps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play();
+        //new GrooveGlide(Path.of("/home/henr/Sync/Syncthing/Home/Studium/OOSE/Projekte/GrooveGlide/maps/Camellia - S.A.T.E.L.L.I.T.E. (Blocko)(m2g)"), "NORMAL").play();
     }
     
 }

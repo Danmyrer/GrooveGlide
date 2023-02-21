@@ -83,11 +83,12 @@ public class Music extends Thread implements GameConfig, Playfield
      * @param initialOffset Songbezogenes-Offset
      * @return  genaues Offset
      */
-    private double offset(double initialOffset)
+    public static double offset(double initialOffset)
     {
         double a = PLAYFIELD_PADDED_OFFSET.y / 2; // = 0
         double b = HITLINE_Y;
-        return (a + b) / SCROLL_PER_SEK * 1000 - initialOffset;
+        double offset = (a + b) / SCROLL_PER_SEK * 1000 + initialOffset;
+        return offset;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class Music extends Thread implements GameConfig, Playfield
     {
         try
         {
-            Thread.sleep((int)offset);
+            Thread.sleep(Math.round(offset));
         } 
         catch (InterruptedException e) { e.printStackTrace(); }
 

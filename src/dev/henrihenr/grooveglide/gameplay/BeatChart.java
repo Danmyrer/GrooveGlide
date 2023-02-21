@@ -31,7 +31,7 @@ public interface BeatChart
         for (int i = 0; i < confString.length; i++)
         {
             if (confString[i].equals("[CONFIG]")) continue;
-            if (confString[i].equals("[CHART]") || confString[i].equals("")) break;
+            if (confString[i].matches("\\[CHARTS?\\]|^$")) break; // CHARTS CHART und leere zeile
 
             String[] conf = confString[i].split("=");
             tempConfig.put(conf[0], conf[1]);
