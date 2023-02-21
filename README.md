@@ -1,3 +1,5 @@
+![](https://repository-images.githubusercontent.com/604114394/e46212af-96d7-4ffe-a10b-da10ab3c5c12)
+
 # GrooveGlide
 
 *"Groove Glide" ist ein Rhythmus-Spiel, bei dem du eine Plattform bewegst, um fallende Noten im Takt der Musik zu treffen.*
