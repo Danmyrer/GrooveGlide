@@ -432,12 +432,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
 
     public static void main(String[] args) 
     {
-        //new Main(Path.of("src/res/dev/henrihenr/beatMaps/Camellia - Clouds in the Blue (Asherz007)(m2g)"), "HARD").play();
-        //new Main(Path.of("src/res/dev/henrihenr/beatMaps/Aiyru - Station (FAMoss)(m2g)"), "BEGINNER").play();
-        //new Main(Path.of("src/res/dev/henrihenr/beatMdjkdfkjdkfsaps/Camellia - GHOST (-mint-)(m2g)"), "COLLAB PHANTASM [MX]").play();
-        //new Main(Path.of("src/res/dev/henrihenr/beatMaps/Panda Eyes _ Teminite - Highscore (Leniane)(m2g)"), "GAME OVER").play();
-        //new Main(Path.of("src/res/dev/henrihenr/beatMaps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play();
-        //new Main(Path.of("src/res/dev/henrihenr/beatMaps/Camellia - Embracing intelligences (Leniane)(m2g)"), "HARD").play();
-        new GrooveGlide(Path.of("src/res/dev/henrihenr/beatMaps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON").play();
+        new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON").play();
     }
+    
 }

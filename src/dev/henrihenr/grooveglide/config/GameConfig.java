@@ -14,7 +14,7 @@ public interface GameConfig
      */
     public static final int TIMER_LOOP_DELAY = 15;
 
-    public static final String SOUND_CLICK = "src/res/dev/henrihenr/audio/Click.wav";
+    public static final String SOUND_CLICK = "skin/sounds/Click.wav";
 
     double FPS = 1000.0 / TIMER_LOOP_DELAY;
     double SCROLL_PER_SEK = SCROLL_SPEED * FPS * 0.9865; // FIXME tell me why
