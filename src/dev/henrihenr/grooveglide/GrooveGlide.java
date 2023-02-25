@@ -217,23 +217,20 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     public void doChecks()
     {
         hitChecks();
-        if (this.beatTime.getBeat() > 1) winStateChecks();
+        winStateChecks();
     }
 
     @Override
     public void onBeat(int beat)
     {
         hitSounds.get(0).play();
+        System.out.println(beat);
         List<List<HitObject>> hos = hitObjectStack.getNewHitObjecs(beat);
         for (int i = 0; i < hos.size(); i++) 
         {
             final int fi = i;
-            SwingUtilities.invokeLater(new Runnable() { // der timer für onbeat läuft nicht auf dem EDT (swing main thread)
-                @Override
-                public void run()
-                {
-                    hitObjects.get(fi).addAll(hos.get(fi));
-                }
+            SwingUtilities.invokeLater(() -> { // der timer für onbeat läuft nicht auf dem EDT (swing main thread)
+                hitObjects.get(fi).addAll(hos.get(fi));
             });
         }
     }
@@ -274,13 +271,14 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
 
     private WinState checkWinLoseCondition()
     {
+        // Lost
         if (!health.isAlive()) return WinState.LOST;
         
-        for (List<HitObject> hoList : hitObjects) 
-        {
-            if (hoList.size() != 0) return WinState.PENDING;
-        }
+        // Pending
+        if (hitObjectStack.getRemainingHitObjects() > 0) return WinState.PENDING;
+        for (List<HitObject> hoList : hitObjects) if (hoList.size() != 0) return WinState.PENDING;
 
+        // Won
         return WinState.WON;
     }
 

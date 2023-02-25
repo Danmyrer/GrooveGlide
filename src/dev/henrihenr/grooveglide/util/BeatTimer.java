@@ -15,6 +15,7 @@ public class BeatTimer extends Thread
     private long startOffset = 0;
 
     private long beatMS = 1000;
+    private long beatNS = -1;
     private int beat = 0;
 
     private long lastNanoTime = 0;
@@ -44,11 +45,12 @@ public class BeatTimer extends Thread
 
     public BeatTimer initTimer()
     {
+        this.beatNS = this.beatMS * 1000000;
         this.timer = new Timer(1, check -> 
         {
-            if (System.nanoTime() - this.lastNanoTime > this.beatMS * 1000000 || this.beat == 0)
+            if (System.nanoTime() - this.lastNanoTime >= this.beatNS)
             {
-                this.lastNanoTime += beatMS * 1000000;
+                this.lastNanoTime += this.beatNS;
                 beat++;
                 beatTimer.onBeat(beat);
             }
@@ -60,6 +62,8 @@ public class BeatTimer extends Thread
     public void run()
     {
         if(this.timer == null) return;
+        if(this.beatNS == -1) return;
+
         if(this.timer.isRunning()) return;
 
         if (this.startOffset > 0) try
@@ -71,7 +75,7 @@ public class BeatTimer extends Thread
             e.printStackTrace();
         }
 
-        this.lastNanoTime = System.nanoTime();
+        this.lastNanoTime = System.nanoTime() - this.beatNS;
         this.timer.start();
     }
 

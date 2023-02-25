@@ -30,6 +30,15 @@ public class HitObjectStack
         this(hitObjects, 24);
     }
 
+    public int getRemainingHitObjects()
+    {
+        int counter = 0;
+        for (List<HitObject> list : hitObjects) {
+            counter += list.size();
+        }
+        return counter;
+    }
+
     private List<List<HitObject>> buildHitObjStack(List<List<HitObject>> hitObjects)
     {
         List<List<HitObject>> hos = new ArrayList<>();
@@ -67,21 +76,29 @@ public class HitObjectStack
         }
         
         return hos;
-        
-        //return null; // FIXME DANIEL HIER GEHTS WEITER
-        // notiz an mich selbst: hier einfach die liste so umformen, dass jedes ho nen beat hat und die x position in abhängigkeit von dem vorherigen anchor steht (spezielle noten mit einem abstand von "anchorFreq"). Die Anchors haben dann (erstmal) nen x value von 0. genaue positionen (höhe von ho und so) kann ich danach machen
     }
 
     public List<List<HitObject>> getNewHitObjecs(int beat)
     {
         List<List<HitObject>> newHitObj = new ArrayList<>();
-        for (int i = 0; i < hitObjects.size(); i++) 
+        
+        for (int i = 0; i < hitObjects.size(); i++) // jede lane
         {
             newHitObj.add(new ArrayList<HitObject>());
-            for (HitObject obj : hitObjects.get(i)) 
+            if (this.hitObjects.get(i).get(0).beat >= beat)
             {
-                if (obj.beat > beat + this.bufferBeats) break;
-                newHitObj.get(i).add(obj);
+                int counter = 0;
+                for (HitObject hitObject : this.hitObjects.get(i)) 
+                {
+                    if (hitObject.anchor) break;
+                    newHitObj.get(i).add(hitObject);
+                    counter++;
+                }
+                while(counter > 0) // elemente von dem stack entfernen
+                {
+                    this.hitObjects.get(i).remove(0);
+                    counter--;
+                }
             }
         }
         return newHitObj;
