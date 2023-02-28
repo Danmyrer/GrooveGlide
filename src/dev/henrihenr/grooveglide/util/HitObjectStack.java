@@ -3,9 +3,11 @@ package dev.henrihenr.grooveglide.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.henrihenr.game2d.Vertex;
+import dev.henrihenr.grooveglide.config.GameConfig;
 import dev.henrihenr.grooveglide.util.drawables.HitObject;
 
-public class HitObjectStack 
+public class HitObjectStack implements GameConfig
 {
     private final List<List<HitObject>> hitObjects;
     
@@ -30,15 +32,6 @@ public class HitObjectStack
         this(hitObjects, 24);
     }
 
-    public int getRemainingHitObjects()
-    {
-        int counter = 0;
-        for (List<HitObject> list : hitObjects) {
-            counter += list.size();
-        }
-        return counter;
-    }
-
     private List<List<HitObject>> buildHitObjStack(List<List<HitObject>> hitObjects)
     {
         List<List<HitObject>> hos = new ArrayList<>();
@@ -56,7 +49,7 @@ public class HitObjectStack
                     double tempOffset = ho.beat - lastAnchorBeat;
                     lastAnchorBeat = ho.beat;
                     hos.get(i).add(new HitObject(
-                        0,
+                        ho.beat,
                         ho.lane,
                         ho.bpm,
                         tempOffset,
@@ -66,7 +59,7 @@ public class HitObjectStack
                 else
                 {
                     hos.get(i).add(new HitObject(
-                        ho.beat - lastAnchorBeat,
+                        ho.beat,
                         ho.lane, 
                         ho.bpm,
                         0
@@ -85,24 +78,52 @@ public class HitObjectStack
         for (int i = 0; i < hitObjects.size(); i++) // jede lane
         {
             newHitObj.add(new ArrayList<HitObject>());
-            if (this.hitObjects.get(i).get(0).beat >= beat)
+            if (this.hitObjects.get(i).get(0).beat + 1 <= beat)
             {
                 int counter = 0;
-                for (HitObject hitObject : this.hitObjects.get(i)) 
+                for (int j = 0; j < this.hitObjects.get(i).size(); j++)
                 {
-                    if (hitObject.anchor) break;
-                    newHitObj.get(i).add(hitObject);
+                    if (j != 0 && hitObjects.get(i).get(j).anchor) break;
+                    newHitObj.get(i).add(hitObjects.get(i).get(j));
                     counter++;
                 }
-                while(counter > 0) // elemente von dem stack entfernen
+                while(counter > 0) // genutzte elemente von dem stack entfernen
                 {
                     this.hitObjects.get(i).remove(0);
                     counter--;
                 }
             }
+
+            fixHitObjectX(newHitObj.get(i));
         }
+        newHitObj.forEach(x -> {
+            System.out.print("[");
+            x.forEach(y -> {
+                System.out.print("X");
+            });
+            System.out.println("]");
+        });
         return newHitObj;
     }
+
+    private void fixHitObjectX(List<HitObject> hitObjects)
+    {
+        for (int i = 1; i < hitObjects.size(); i++)
+        {
+            double beatdelta = hitObjects.get(i).beat - hitObjects.get(0).beat;
+            Vertex currentPos = hitObjects.get(i).pos();
+            hitObjects.get(i).setPos(new Vertex(currentPos.x, currentPos.y - 100 * beatdelta));
+        }
+    }
+
+    public int getRemainingHitObjects()
+    {
+        int counter = 0;
+        for (List<HitObject> list : hitObjects) {
+            counter += list.size();
+        }
+        return counter;
+    } 
 
     @Override
     public String toString()

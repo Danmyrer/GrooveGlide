@@ -81,8 +81,8 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         try
         {
             BeatMap beatMap = new BeatMap(beatMapPath);
-            this.hitObjectStack = new HitObjectStack(beatMap.buildChart(difficulty));
-            this.music = new Music(beatMap.songPath, 0);
+            this.hitObjectStack = new HitObjectStack(beatMap.buildChart(difficulty), 4);
+            this.music = new Music(beatMap.songPath, (int) Music.offset(0)); // Music.offset(0) ist immer die zeit die ne note von x = 0 bis zur Hitline brauch das abuse ich hier jetzt mal einfach 💀
             this.beatTime = new BeatTimer(this).setStartOffset(Integer.valueOf(beatMap.chartConfig.get("MAP_OFFSET"))).setBeatMS(Math.round(60000 / (double)beatMap.bpm)).initTimer();
         }
         catch (IOException e)
@@ -123,6 +123,14 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         return this.width;
     }
     // endregion
+
+    private int getMusicOffset()
+    {
+        double y = PLAYFIELD.y * HITLINE_REL_POS;
+        double time = SCROLL_PER_SEK;
+        int offset = (int) Math.round(time / y * 1000);
+        return 0;//offset;
+    }
 
     /**
      * Initialisieren des Spiels.
@@ -221,9 +229,9 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     }
 
     @Override
-    public void onBeat(int beat)
+    public void onBeat(int beat) // daniel beachte das der beat wegen dem music offset falsch "klingt", aber da die noten ja bis zur weißen linie noch müssen passt alles 🙂🔫
     {
-        hitSounds.get(0).play();
+        //hitSounds.get(0).play();
         System.out.println(beat);
         List<List<HitObject>> hos = hitObjectStack.getNewHitObjecs(beat);
         for (int i = 0; i < hos.size(); i++) 
@@ -441,12 +449,13 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
 
     public static void main(String[] args) 
     {
-        //new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON").play();
-        new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "NORMAL").play();
+        //new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "DARKNESS").play();
+        //new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "NORMAL").play();
         //new GrooveGlide(Path.of("maps/Camellia - Clouds in the Blue (Asherz007)(m2g)"), "INSANE").play();
         //new GrooveGlide(Path.of("maps/Camellia - Embracing intelligences (Leniane)(m2g)"), "ACCEPTANCE").play();
         //new GrooveGlide(Path.of("maps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play();
         //new GrooveGlide(Path.of("/home/henr/Sync/Syncthing/Home/Studium/OOSE/Projekte/GrooveGlide/maps/Camellia - S.A.T.E.L.L.I.T.E. (Blocko)(m2g)"), "NORMAL").play();
+        new GrooveGlide(Path.of("maps/Martin Garrix - Animals (DrawdeX)(m2g)"), "NM").play();
     }
     
 }

@@ -32,7 +32,7 @@ public class HitObject extends AbstractGameObj implements Playfield, GameConfig
     public HitObject(double beat, int lane, double bpm, double offset, boolean anchor)
     {
         super(
-            new Vertex(
+            /*new Vertex(
                 Playfield.getLanePaddedX(lane), 
                 - (
                     (PLAYFIELD_PADDED.y * (1 - HITLINE_REL_POS)) +
@@ -40,7 +40,9 @@ public class HitObject extends AbstractGameObj implements Playfield, GameConfig
                     (SCROLL_PER_SEK / 1000.0 * offset) +
                     (SCROLL_PER_SEK * ((60.0 * beat) / bpm))
                 )
-            ), 
+            )*/new Vertex(
+                Playfield.getLanePaddedX(lane),
+                0), 
         new Vertex(0, SCROLL_SPEED), 
         LANE_LENGTH_PADDED,
         PLAYFIELD_PADDED.y / HITOBJ_HEIGHT_QUO);
