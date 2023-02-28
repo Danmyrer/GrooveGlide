@@ -124,14 +124,6 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     }
     // endregion
 
-    private int getMusicOffset()
-    {
-        double y = PLAYFIELD.y * HITLINE_REL_POS;
-        double time = SCROLL_PER_SEK;
-        int offset = (int) Math.round(time / y * 1000);
-        return 0;//offset;
-    }
-
     /**
      * Initialisieren des Spiels.
      */
