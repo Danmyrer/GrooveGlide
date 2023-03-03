@@ -82,7 +82,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         {
             BeatMap beatMap = new BeatMap(beatMapPath);
             this.hitObjectStack = new HitObjectStack(beatMap.buildChart(difficulty), 1);
-            this.music = new Music(beatMap.songPath, (int) Music.offset(0)); // Music.offset(0) ist immer die zeit die ne note von x = 0 bis zur Hitline brauch das abuse ich hier jetzt mal einfach 💀
+            this.music = new Music(beatMap.songPath, (int) Music.offset(Music.offset(0))); // Music.offset(0) ist immer die zeit die ne note von x = 0 bis zur Hitline brauch das abuse ich hier jetzt mal einfach 💀 Yen wenn du das siehst dont judge me pls
             this.beatTime = new BeatTimer(this).setStartOffset(Integer.valueOf(beatMap.chartConfig.get("MAP_OFFSET"))).setBeatMS(Math.round(60000 / (double)beatMap.bpm)).initTimer();
         }
         catch (IOException e)

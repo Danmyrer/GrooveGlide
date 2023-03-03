@@ -8,10 +8,10 @@ import dev.henrihenr.game2d.Vertex;
 public interface Playfield 
 {
     // region Manuell setzbare Werte
-    //fpublic static final Vertex PLAYFIELD = new Vertex(600, 1000);
+    // public static final Vertex PLAYFIELD = new Vertex(600, 1000);
     public static final Vertex PLAYFIELD = new Vertex(500, 750);
 
-    public static final Vertex PLAYFIELD_PADDING = new Vertex(0.1, 0);
+    public static final Vertex PLAYFIELD_PADDING = new Vertex(0.1, 0); // Y bloß nicht ändern das macht alles Kaputt
 
     // TODO lanes werden scheinbar nicht aus der Map-Config genommen
     public static final int LANES = 6;

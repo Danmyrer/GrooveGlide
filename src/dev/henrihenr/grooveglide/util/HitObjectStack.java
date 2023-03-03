@@ -5,9 +5,10 @@ import java.util.List;
 
 import dev.henrihenr.game2d.Vertex;
 import dev.henrihenr.grooveglide.config.GameConfig;
+import dev.henrihenr.grooveglide.config.Playfield;
 import dev.henrihenr.grooveglide.util.drawables.HitObject;
 
-public class HitObjectStack implements GameConfig
+public class HitObjectStack implements GameConfig, Playfield
 {
     private final List<List<HitObject>> hitObjects;
     
@@ -16,6 +17,13 @@ public class HitObjectStack implements GameConfig
 
     private double bpm;
 
+    /**
+     * Konstruktor
+     * 
+     * @param hitObjects Liste aller HOs die in den Stack geladen werden sollen
+     * @param anchorFreq Intervall, in dem neue Beats geladen werden sollen. Standart sollte = 1 sein
+     * @param bufferBeats Puffer für besonders langsame PCs (am besten bei 0 stehen lassen), kann probleme verursachen
+     */
     public HitObjectStack(List<List<HitObject>> hitObjects, int anchorFreq, int bufferBeats)
     {
         this.anchorFreq = anchorFreq; // in beats
@@ -25,16 +33,28 @@ public class HitObjectStack implements GameConfig
         this.bpm = hitObjects.get(0).get(0).bpm;
     }
 
+    /**
+     * @see HitObjectStack#HitObjectStack(List, int, int)
+     */
     public HitObjectStack(List<List<HitObject>> hitObjects, int anchorFreq)
     {
         this(hitObjects, anchorFreq, 1);
     }
 
+    /**
+     * @see HitObjectStack#HitObjectStack(List, int, int)
+     */
     public HitObjectStack(List<List<HitObject>> hitObjects)
     {
         this(hitObjects, 24);
     }
 
+    /**
+     * Generiert aus den eingegeben HOs einen Stack
+     * 
+     * @param hitObjects Liste von unbearbeiteten HOs
+     * @return Stack
+     */
     private List<List<HitObject>> buildHitObjStack(List<List<HitObject>> hitObjects)
     {
         List<List<HitObject>> hos = new ArrayList<>();
@@ -75,6 +95,12 @@ public class HitObjectStack implements GameConfig
         return hos;
     }
 
+    /**
+     * Stellt dem Spiel einen gewisse Anzahl an HOs bereit. Hierdurch muss das spiel nicht ständig tausende Noten bewegen und sichert, dass die Noten immer Synchron bleiben
+     * 
+     * @param beat Aktueller Beat des Spiels
+     * @return Liste an HOs mit Korrigierter X-Position
+     */
     public List<List<HitObject>> getNewHitObjecs(int beat)
     {
         List<List<HitObject>> newHitObj = new ArrayList<>();
@@ -100,6 +126,7 @@ public class HitObjectStack implements GameConfig
             }
 
             fixHitObjectX(newHitObj.get(iLane), beat);
+            moveHitObjectXOneLaneYUp(newHitObj.get(iLane));
         }
         newHitObj.forEach(x -> {
             System.out.print("[");
@@ -113,6 +140,11 @@ public class HitObjectStack implements GameConfig
         return newHitObj;
     }
 
+    /**
+     * Korrigiert die X-Position der zu ladenen HitObjects, um auch gebrochene Beats (Beat 3,45556) zu ermöglichen
+     * @param hitObjects
+     * @param beat
+     */
     private void fixHitObjectX(List<HitObject> hitObjects, int beat) // HIER NICHTS MEHR BERÜHREN GERADE KLAPPTS UND WENN DA WAS KAPUTT GEHT GEHE ICH KAPUTT
     {
         if (hitObjects.size() == 0) return;
@@ -136,6 +168,24 @@ public class HitObjectStack implements GameConfig
         }
     }
 
+    /**
+     * Verschiebt alle neuen noten ein mal umd die Höhe des Spielfelds. So werden sie außerhalb des Sichtbaren bereichs geladen.
+     * @param hitObjects zu verschiebende HitObjects
+     */
+    private void moveHitObjectXOneLaneYUp(List<HitObject> hitObjects)
+    {
+        for (HitObject hitObject : hitObjects) 
+        {
+            Vertex currentPos = hitObject.pos();
+            double offset = PLAYFIELD.y;
+            hitObject.setPos(new Vertex(currentPos.x, currentPos.y - offset));
+        }
+    }
+
+    /**
+     * Zählt die verbleibenden HitObjects im Stack
+     * @return int des Wertes
+     */
     public int getRemainingHitObjects()
     {
         int counter = 0;
