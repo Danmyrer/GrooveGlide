@@ -81,7 +81,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         try
         {
             BeatMap beatMap = new BeatMap(beatMapPath);
-            this.hitObjectStack = new HitObjectStack(beatMap.buildChart(difficulty), 4);
+            this.hitObjectStack = new HitObjectStack(beatMap.buildChart(difficulty), 16);
             this.music = new Music(beatMap.songPath, (int) Music.offset(0)); // Music.offset(0) ist immer die zeit die ne note von x = 0 bis zur Hitline brauch das abuse ich hier jetzt mal einfach 💀
             this.beatTime = new BeatTimer(this).setStartOffset(Integer.valueOf(beatMap.chartConfig.get("MAP_OFFSET"))).setBeatMS(Math.round(60000 / (double)beatMap.bpm)).initTimer();
         }
@@ -226,6 +226,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         //hitSounds.get(0).play();
         System.out.println(beat);
         List<List<HitObject>> hos = hitObjectStack.getNewHitObjecs(beat);
+        if (hos == null) return; // wenn die Liste Leer ist. Wenn das Auftritt dauert es nicht mehr lange bis die Map vorbei ist
         for (int i = 0; i < hos.size(); i++) 
         {
             final int fi = i;
@@ -262,7 +263,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
             
             screen.setState(State.INACTIVE);
             frame.setVisible(false);
-
+            
             music.fadeOut(5000);
             music.pause();
             System.exit(0);
@@ -391,7 +392,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     @SuppressWarnings("unused")
     private void printGameInfo(Judgement judgement)
     {
-        if(true) return; // FIXME wieder aktivieren wenn nötig
+        //if(true) return; // FIXME wieder aktivieren wenn nötig
         clearConsole();
 
         System.out.println((int)(health.getHealth() * 100) + "% HP");
@@ -441,13 +442,13 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
 
     public static void main(String[] args) 
     {
-        //new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "DARKNESS").play();
-        //new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "NORMAL").play();
+        new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "DARKNESS").play();
+        //new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "EASY").play();
         //new GrooveGlide(Path.of("maps/Camellia - Clouds in the Blue (Asherz007)(m2g)"), "INSANE").play();
         //new GrooveGlide(Path.of("maps/Camellia - Embracing intelligences (Leniane)(m2g)"), "ACCEPTANCE").play();
         //new GrooveGlide(Path.of("maps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play();
         //new GrooveGlide(Path.of("/home/henr/Sync/Syncthing/Home/Studium/OOSE/Projekte/GrooveGlide/maps/Camellia - S.A.T.E.L.L.I.T.E. (Blocko)(m2g)"), "NORMAL").play();
-        new GrooveGlide(Path.of("maps/Martin Garrix - Animals (DrawdeX)(m2g)"), "NM").play();
+        //new GrooveGlide(Path.of("maps/Martin Garrix - Animals (DrawdeX)(m2g)"), "NM").play();
     }
     
 }

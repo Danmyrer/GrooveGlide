@@ -14,12 +14,15 @@ public class HitObjectStack implements GameConfig
     private final int bufferBeats;
     private final int anchorFreq;
 
+    private double bpm;
+
     public HitObjectStack(List<List<HitObject>> hitObjects, int anchorFreq, int bufferBeats)
     {
         this.anchorFreq = anchorFreq; // in beats
         this.bufferBeats = bufferBeats;
 
         this.hitObjects = buildHitObjStack(hitObjects);
+        this.bpm = hitObjects.get(0).get(0).bpm;
     }
 
     public HitObjectStack(List<List<HitObject>> hitObjects, int anchorFreq)
@@ -44,15 +47,15 @@ public class HitObjectStack implements GameConfig
             {
                 List<HitObject> lane = hitObjects.get(i);
                 HitObject ho = lane.get(u);
+                double tempOffset = ho.beat - lastAnchorBeat;
                 if (ho.beat - lastAnchorBeat > anchorFreq || u == 0)
                 {
-                    double tempOffset = ho.beat - lastAnchorBeat;
                     lastAnchorBeat = ho.beat;
                     hos.get(i).add(new HitObject(
                         ho.beat,
                         ho.lane,
                         ho.bpm,
-                        tempOffset,
+                        0,
                         true
                     ));
                 }
@@ -62,7 +65,8 @@ public class HitObjectStack implements GameConfig
                         ho.beat,
                         ho.lane, 
                         ho.bpm,
-                        0
+                        tempOffset,
+                        false
                         ));
                 }
             }
@@ -75,26 +79,27 @@ public class HitObjectStack implements GameConfig
     {
         List<List<HitObject>> newHitObj = new ArrayList<>();
         
-        for (int i = 0; i < hitObjects.size(); i++) // jede lane
+        for (int iLane = 0; iLane < hitObjects.size(); iLane++) // jede lane
         {
             newHitObj.add(new ArrayList<HitObject>());
-            if (this.hitObjects.get(i).get(0).beat + 1 <= beat)
+            if (this.hitObjects.get(iLane).size() == 0) continue;
+            if (this.hitObjects.get(iLane).get(0).beat + 1 <= beat)
             {
                 int counter = 0;
-                for (int j = 0; j < this.hitObjects.get(i).size(); j++)
+                for (int iObject = 0; iObject < this.hitObjects.get(iLane).size(); iObject++)
                 {
-                    if (j != 0 && hitObjects.get(i).get(j).anchor) break;
-                    newHitObj.get(i).add(hitObjects.get(i).get(j));
+                    if (iObject != 0 && hitObjects.get(iLane).get(iObject).anchor) break;
+                    newHitObj.get(iLane).add(hitObjects.get(iLane).get(iObject));
                     counter++;
                 }
                 while(counter > 0) // genutzte elemente von dem stack entfernen
                 {
-                    this.hitObjects.get(i).remove(0);
+                    this.hitObjects.get(iLane).remove(0);
                     counter--;
                 }
             }
 
-            fixHitObjectX(newHitObj.get(i));
+            fixHitObjectX(newHitObj.get(iLane));
         }
         newHitObj.forEach(x -> {
             System.out.print("[");
@@ -103,16 +108,24 @@ public class HitObjectStack implements GameConfig
             });
             System.out.println("]");
         });
+
+        System.out.println("Remaining: " + this.getRemainingHitObjects());
         return newHitObj;
     }
 
     private void fixHitObjectX(List<HitObject> hitObjects)
     {
+        /*
+         * Seconds per Beat = 60 / bpm
+         * Scroll per Beat = SCROLL_PER_SEC * 60 / bpm
+         */
+        double scrollPerBeat = (SCROLL_PER_SEK * 60) / this.bpm;
+
         for (int i = 1; i < hitObjects.size(); i++)
         {
-            double beatdelta = hitObjects.get(i).beat - hitObjects.get(0).beat;
+            double beatdelta = hitObjects.get(i).offset;
             Vertex currentPos = hitObjects.get(i).pos();
-            hitObjects.get(i).setPos(new Vertex(currentPos.x, currentPos.y - 100 * beatdelta));
+            hitObjects.get(i).setPos(new Vertex(currentPos.x, 0 - scrollPerBeat * beatdelta));
         }
     }
 
