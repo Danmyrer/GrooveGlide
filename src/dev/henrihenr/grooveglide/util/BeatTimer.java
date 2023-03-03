@@ -16,7 +16,7 @@ public class BeatTimer extends Thread
 
     private long beatMS = 1000;
     private long beatNS = -1;
-    private int beat = 0;
+    private int beat = -1;
 
     private long lastNanoTime = 0;
 

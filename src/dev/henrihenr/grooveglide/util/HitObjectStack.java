@@ -83,7 +83,7 @@ public class HitObjectStack implements GameConfig
         {
             newHitObj.add(new ArrayList<HitObject>());
             if (this.hitObjects.get(iLane).size() == 0) continue;
-            if (this.hitObjects.get(iLane).get(0).beat + 1 <= beat)
+            if (this.hitObjects.get(iLane).get(0).beat <= beat) // NOTIZ AN MICH SELBST ICH MACH SCHON NE BEAT-KORREKTUR AMK HIER NIX ÄNDERN
             {
                 int counter = 0;
                 for (int iObject = 0; iObject < this.hitObjects.get(iLane).size(); iObject++)
@@ -92,14 +92,14 @@ public class HitObjectStack implements GameConfig
                     newHitObj.get(iLane).add(hitObjects.get(iLane).get(iObject));
                     counter++;
                 }
-                while(counter > 0) // genutzte elemente von dem stack entfernen
+                while(counter > 0) // genutzte elemente aus dem stack entfernen
                 {
                     this.hitObjects.get(iLane).remove(0);
                     counter--;
                 }
             }
 
-            fixHitObjectX(newHitObj.get(iLane));
+            fixHitObjectX(newHitObj.get(iLane), beat);
         }
         newHitObj.forEach(x -> {
             System.out.print("[");
@@ -113,19 +113,26 @@ public class HitObjectStack implements GameConfig
         return newHitObj;
     }
 
-    private void fixHitObjectX(List<HitObject> hitObjects)
+    private void fixHitObjectX(List<HitObject> hitObjects, int beat) // HIER NICHTS MEHR BERÜHREN GERADE KLAPPTS UND WENN DA WAS KAPUTT GEHT GEHE ICH KAPUTT
     {
+        if (hitObjects.size() == 0) return;
+
         /*
          * Seconds per Beat = 60 / bpm
          * Scroll per Beat = SCROLL_PER_SEC * 60 / bpm
          */
         double scrollPerBeat = (SCROLL_PER_SEK * 60) / this.bpm;
 
+        HitObject firstHO = hitObjects.get(0);
+        double beatDelta = beat - firstHO.beat;
+        double offset = scrollPerBeat * beatDelta; // hier kommt KEIN Minus hin, weil die noten immer NACH ihrem Beat geladen Werden
+        firstHO.setPos(new Vertex(firstHO.pos().x, offset));
+
         for (int i = 1; i < hitObjects.size(); i++)
         {
-            double beatdelta = hitObjects.get(i).offset;
+            double beatdelta = hitObjects.get(i).beat - firstHO.beat;//hitObjects.get(i).offset;
             Vertex currentPos = hitObjects.get(i).pos();
-            hitObjects.get(i).setPos(new Vertex(currentPos.x, 0 - scrollPerBeat * beatdelta));
+            hitObjects.get(i).setPos(new Vertex(currentPos.x, firstHO.pos().y-(scrollPerBeat * beatdelta))); // hier kommt ein Minus hin weil die noten NACH ihrem VORGÄNGER geladen werden
         }
     }
 
