@@ -76,6 +76,8 @@ Statistiken wie Genauigkeit, Punktzahl, Combo, Health-Points, Verbleibende Noten
 
 Wenn der Spieler 0% Health erreicht gilt das Spiel als Verloren und wird abgebrochen.
 
+> Es kann ein "No-Fail" Modus aktiviert werden, bei dem man das Spiel nicht mehr verlieren kann. Dieser ist in der Datei `GameConfig.java` zu finden.
+
 Wenn der Spieler alle Noten "überlebt" hat, gilt das Spiel als Gewonnen und wird beendet.
 
 ### TL:DR
