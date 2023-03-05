@@ -442,9 +442,9 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         //new GrooveGlide(Path.of("maps/Camellia - Embracing intelligences (Leniane)(m2g)"), "HARD").play(); // Maps: "HARD", "ACCEPTANCE"
         //new GrooveGlide(Path.of("maps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play(); // Maps: "DECADES MANIKANI"
         //new GrooveGlide(Path.of("maps/Martin Garrix - Animals (DrawdeX)(m2g)"), "MX").play(); // Maps: "NM", "HD", "MX"
-        //new GrooveGlide(Path.of("maps/Android52 - Super Anime Groove 3d World (Mastermile)(m2g)"), "HARD").play(); // Maps: "HARD"
+        new GrooveGlide(Path.of("maps/Android52 - Super Anime Groove 3d World (Mastermile)(m2g)"), "HARD").play(); // Maps: "HARD"
         //new GrooveGlide(Path.of("maps/boy pablo - wtf (Henri Henr)(m2g)"), "NORMAL").play(); // Maps: "EASY", "NORMAL"
         //new GrooveGlide(Path.of("maps/Feint - We Won_t Be Alone (feat. Laura Brehm) (-NoName-)(m2g)"), "TOGETHER").play(); // Maps: "EASY", "NORMAL", "HARD", "TOGETHER"
-        new GrooveGlide(Path.of("maps/Panda Eyes _ Teminite - Highscore (Leniane)(m2g)"), "GAME OVER").play();
+        //new GrooveGlide(Path.of("maps/Panda Eyes _ Teminite - Highscore (Leniane)(m2g)"), "GAME OVER").play();
     }
 }

@@ -6,7 +6,7 @@ import dev.henrihenr.grooveglide.util.Judgement;
 public class Health implements GameConfig
 {
     // Kann ich irgendwann wenn ich mehr Zeit habe spannender machen
-    private static final double healthOnMiss = -0.16;
+    private static final double healthOnMiss = -0.09;//-0.16;
     private static final double healthOnOKHit = 0;
     private static final double healthOnGreatHit = 0.01;
     private static final double healthOnPerfectHit  = 0.04;

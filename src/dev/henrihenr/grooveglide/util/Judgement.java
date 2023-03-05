@@ -19,9 +19,9 @@ public enum Judgement implements Playfield
     public static final double JUDGEMENT_TIME_E_PERFECT = 0.04;//0.03;
 
     // Judgements für späte Zeiten
-    public static final double JUDGEMENT_TIME_L_PERFECT = -0.035;//-0.02;
-    public static final double JUDGEMENT_TIME_L_GREAT = -0.05;//-0.035;
-    public static final double JUDGEMENT_TIME_L_OKAY = -0.08;//-0.05;
+    public static final double JUDGEMENT_TIME_L_PERFECT = -0.04;//-0.02;
+    public static final double JUDGEMENT_TIME_L_GREAT = -0.06;//-0.035;
+    public static final double JUDGEMENT_TIME_L_OKAY = -0.1;//-0.05;
 
     /**
      * Offset, dass die Position der Hitline beschreibt
