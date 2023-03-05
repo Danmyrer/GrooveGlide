@@ -23,12 +23,12 @@ Das Spiel enthält 2 vorinstallierte Beatmaps (*Zutomayo - Darken / Boy Pablo - 
 ```shell
 # im Ordner GrooveGlide
 cd maps
-git clone GrooveGlideExtra DANIEL TODO
+git clone https://github.com/Danmyrer/GrooveGlideExtra.git
 mv GrooveGlideExtra/* .
 rmdir GrooveGlideExtra
 ```
 
-> Maps können auch aus `.osz`-Dateien des Spiels Osu generiert werden, mehr dazu siehe ####
+> Maps können auch aus `.osz`-Dateien des Spiels Osu generiert werden, mehr dazu siehe [README - ManiaConverter](https://github.com/Danmyrer/GrooveGlide/blob/f01e5101209097374b3f93c5ed6312b3b92a2f31/doc/README%20-%20ManiaConverter.md)
 
 ## Songauswahl
 
