@@ -13,7 +13,6 @@ public interface Playfield
 
     public static final Vertex PLAYFIELD_PADDING = new Vertex(0.1, 0); // Y bloß nicht ändern das macht alles Kaputt
 
-    // TODO lanes werden scheinbar nicht aus der Map-Config genommen
     public static final int LANES = 6;
     public static final double LANE_PADDING = 0.1;
 

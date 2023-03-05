@@ -15,6 +15,8 @@ public class HitObjectStack implements GameConfig, Playfield
     private final int bufferBeats;
     private final int anchorFreq;
 
+    private int laneOffset;
+
     private double bpm;
 
     /**
@@ -105,6 +107,9 @@ public class HitObjectStack implements GameConfig, Playfield
     {
         List<List<HitObject>> newHitObj = new ArrayList<>();
         
+        if (beat % 16 == 0) changeMovementOpOffset(); // soll die lane gewechselt werden?
+        for (int i = 0; i < this.laneOffset; i++) newHitObj.add(new ArrayList<>()); // leere lanes als ausgleich hinzufügen
+
         for (int iLane = 0; iLane < hitObjects.size(); iLane++) // jede lane
         {
             newHitObj.add(new ArrayList<HitObject>());
@@ -115,7 +120,7 @@ public class HitObjectStack implements GameConfig, Playfield
                 for (int iObject = 0; iObject < this.hitObjects.get(iLane).size(); iObject++)
                 {
                     if (iObject != 0 && hitObjects.get(iLane).get(iObject).anchor) break;
-                    newHitObj.get(iLane).add(hitObjects.get(iLane).get(iObject));
+                    newHitObj.get(iLane + this.laneOffset).add(hitObjects.get(iLane).get(iObject));
                     counter++;
                 }
                 while(counter > 0) // genutzte elemente aus dem stack entfernen
@@ -125,18 +130,12 @@ public class HitObjectStack implements GameConfig, Playfield
                 }
             }
 
-            fixHitObjectX(newHitObj.get(iLane), beat);
+            fixHitObjectY(newHitObj.get(iLane), beat);
             moveHitObjectXOneLaneYUp(newHitObj.get(iLane));
         }
-        newHitObj.forEach(x -> {
-            System.out.print("[");
-            x.forEach(y -> {
-                System.out.print("X");
-            });
-            System.out.println("]");
-        });
+        
 
-        System.out.println("Remaining: " + this.getRemainingHitObjects());
+        movementOp(newHitObj, this.laneOffset);
         return newHitObj;
     }
 
@@ -145,7 +144,7 @@ public class HitObjectStack implements GameConfig, Playfield
      * @param hitObjects
      * @param beat
      */
-    private void fixHitObjectX(List<HitObject> hitObjects, int beat) // HIER NICHTS MEHR BERÜHREN GERADE KLAPPTS UND WENN DA WAS KAPUTT GEHT GEHE ICH KAPUTT
+    private void fixHitObjectY(List<HitObject> hitObjects, int beat) // HIER NICHTS MEHR BERÜHREN GERADE KLAPPTS UND WENN DA WAS KAPUTT GEHT GEHE ICH KAPUTT
     {
         if (hitObjects.size() == 0) return;
 
@@ -183,6 +182,41 @@ public class HitObjectStack implements GameConfig, Playfield
     }
 
     /**
+     * Verschiebt noten um ein offset innerhalb des Stacks
+     * @param list Stack
+     * @param offset Offset der Note in Lanes
+     */
+    private void movementOp(List<List<HitObject>> list, int offset)
+    {
+        for (List<HitObject> hitObjects : list) 
+        {
+            for (HitObject hitObject : hitObjects) 
+            {
+                hitObject.lane += offset;
+                
+                double tempPosY = hitObject.pos().y;
+                hitObject.setPos(new Vertex(Playfield.getLanePaddedX(hitObject.lane), tempPosY));
+            }
+        }
+    }
+
+    /**
+     * Bestimmt zufällig ob - und wenn ja - in welche Richtung die folgenden Noten verschoben werden sollen.
+     */
+    private void changeMovementOpOffset()
+    {
+        boolean movementOp = (Math.random() <= 0.5);
+        if (!movementOp) return;
+
+        int movementDir;
+        if (this.laneOffset <= 0) movementDir = 1;
+        else if (this.laneOffset >= LANES - 4) movementDir = -1;
+        else movementDir = (Math.random() <= 0.5) ? 1 : -1;
+
+        this.laneOffset += movementDir;
+    }
+
+    /**
      * Zählt die verbleibenden HitObjects im Stack
      * @return int des Wertes
      */
@@ -193,7 +227,7 @@ public class HitObjectStack implements GameConfig, Playfield
             counter += list.size();
         }
         return counter;
-    } 
+    }
 
     @Override
     public String toString()

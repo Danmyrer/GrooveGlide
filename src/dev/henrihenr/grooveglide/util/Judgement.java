@@ -14,14 +14,14 @@ public enum Judgement implements Playfield
     NONE, MISS, E_OKAY, E_GREAT, E_PERFECT, L_PERFECT, L_GREAT, L_OKAY;
 
     // Judgements für frühe Zeiten
-    public static final double JUDGEMENT_TIME_E_OKAY = 0.065;
-    public static final double JUDGEMENT_TIME_E_GREAT = 0.045;
-    public static final double JUDGEMENT_TIME_E_PERFECT = 0.03;
+    public static final double JUDGEMENT_TIME_E_OKAY = 0.1;//0.065;
+    public static final double JUDGEMENT_TIME_E_GREAT = 0.06;//0.045;
+    public static final double JUDGEMENT_TIME_E_PERFECT = 0.04;//0.03;
 
     // Judgements für späte Zeiten
-    public static final double JUDGEMENT_TIME_L_PERFECT = -0.02;
-    public static final double JUDGEMENT_TIME_L_GREAT = -0.035;
-    public static final double JUDGEMENT_TIME_L_OKAY = -0.05;
+    public static final double JUDGEMENT_TIME_L_PERFECT = -0.035;//-0.02;
+    public static final double JUDGEMENT_TIME_L_GREAT = -0.05;//-0.035;
+    public static final double JUDGEMENT_TIME_L_OKAY = -0.08;//-0.05;
 
     /**
      * Offset, dass die Position der Hitline beschreibt
@@ -86,9 +86,9 @@ public enum Judgement implements Playfield
      */
     public static Judgement judgeTime(int lane, List<List<HitObject>> hitObject)
     {
-        if (hitObject.get(lane + laneOffset).size() == 0) return Judgement.NONE;
+        if (hitObject.get(lane).size() == 0) return Judgement.NONE;
 
-        double time = checkRelativeDistanceToHitObject(lane + laneOffset, hitObject);
+        double time = checkRelativeDistanceToHitObject(lane, hitObject);
 
         if (time <= JUDGEMENT_TIME_E_PERFECT && time >= JUDGEMENT_TIME_L_PERFECT)
         {

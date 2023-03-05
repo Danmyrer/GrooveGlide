@@ -68,7 +68,7 @@ public class BeatMap implements BeatChart, GameConfig
 
         this.chartConfig = getConfMap(chartString);
 
-        long hitObjectOffset = 0;//Long.valueOf(chartConfig.get("MAP_OFFSET")); // FIXME ACHTUNG wird gerade von HitObjectStackk überschrieben (weil map offset technically nicht das selbe wie ho Offset ist)
+        long hitObjectOffset = 0;//Long.valueOf(chartConfig.get("MAP_OFFSET")); // ACHTUNG wird gerade von HitObjectStackk überschrieben (weil map offset technically nicht das selbe wie ho Offset ist)
 
         List<List<HitObject>> chart = new ArrayList<>();
 

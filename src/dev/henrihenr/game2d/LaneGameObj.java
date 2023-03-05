@@ -32,7 +32,7 @@ public abstract class LaneGameObj extends AbstractGameObj implements Playfield
             /*if (this instanceof KeyPressedGlow)
                 return; // das ist so unheilig
             else
-                throw e;*/ // FIXME Prüfen, ob das hier noch notwendig ist
+                throw e;*/ // vllt mal Prüfen, ob das hier noch notwendig ist
         }
     }
 

@@ -62,7 +62,6 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
      * @param beatMapPath   Pfad zu dem Verzeichnis der Beatmap (wo sich die Config Befindet)
      * @param difficulty    Auswahl der Chart / Schwierigkeit einer Beatmap. Eine Beatmap kann verschiedene Charts haben
      * 
-     * TODO Playfield interface in eine eigene klasse umschreiben, sodass u.a lane variabel sein kann
      */
     GrooveGlide(Path beatMapPath, String difficulty)
     {
@@ -198,16 +197,15 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     {
         try
         {
-            for (int i = 3; i > 0; i--)
+            for (int i = 5; i > 0; i--)
             {
-                System.out.println("START IN: " + i);
+                System.out.println("MACH DICH BEREIT: " + i);
                 Thread.sleep(1000);
+                clearConsole();
             }
-            System.out.println("GO");
         }
         catch(InterruptedException e) { e.printStackTrace(); }
         
-        System.out.println(beatTime.toString());
         music.start();
         beatTime.start();
         screen.setState(State.ACTIVE);
@@ -223,8 +221,6 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     @Override
     public void onBeat(int beat) // note an mich selbst beachte das der beat wegen dem music offset falsch "klingt", aber da die noten ja bis zur weißen linie noch müssen passt alles 🙂🔫
     {
-        //hitSounds.get(0).play();
-        System.out.println(beat);
         List<List<HitObject>> hos = hitObjectStack.getNewHitObjecs(beat);
         if (hos == null) return; // wenn die Liste Leer ist. Wenn das Auftritt dauert es nicht mehr lange bis die Map vorbei ist
         for (int i = 0; i < hos.size(); i++) 
@@ -270,10 +266,11 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         }
     }
 
+    @SuppressWarnings("all") // Wegen dem "No-Fail-Mod"
     private WinState checkWinLoseCondition()
     {
         // Lost
-        if (!health.isAlive()) return WinState.LOST;
+        if (!MOD_NO_FAIL && !health.isAlive()) return WinState.LOST;
         
         // Pending
         if (hitObjectStack.getRemainingHitObjects() > 0) return WinState.PENDING;
@@ -335,7 +332,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         keyPressedGlow.get(hitLane).showMe();
         hitSounds.get(hitLane).play();
 
-        Judgement judgement = Judgement.judgeTime(hitLane, hitObjects);
+        Judgement judgement = Judgement.judgeTime(hitLane + Judgement.laneOffset, hitObjects);
         if (judgement != Judgement.MISS && judgement != Judgement.NONE)
         {
             hitObjects.get(hitLane + Judgement.laneOffset).remove(0);
@@ -357,8 +354,7 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     }
 
     /**
-     * Versteckt den Indikator für den Keypres                System.out.print("\033[H\033[2J");  
-                System.out.flush();s
+     * Versteckt den Indikator für den Keypress
      * @param position
      */
     private void handleKeyRelease(int hitLane)
@@ -389,16 +385,15 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
         Judgement.moveLaneOffset(dir);
     }
 
-    @SuppressWarnings("unused")
     private void printGameInfo(Judgement judgement)
     {
-        if(true) return; // FIXME wieder aktivieren wenn nötig
         clearConsole();
 
         System.out.println((int)(health.getHealth() * 100) + "% HP");
         System.out.println(score.getScore() + " PTS");
         System.out.println(score.getCombo() + "x Combo");
-        
+        System.out.println("Remaining: " + hitObjectStack.getRemainingHitObjects());
+
         System.out.println("\n----------------------\n");
 
         if (judgement != Judgement.NONE) System.out.println(judgement);
@@ -436,20 +431,20 @@ public class GrooveGlide implements Game, Beat, Playfield, GameConfig
     @Override
     public boolean lost()
     {
-        return false;
-        //return this.winState == WinState.LOST;
+        return this.winState == WinState.LOST;
     }
 
     public static void main(String[] args) 
     {
-        //new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "DARKNESS").play();
-        //new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "EASY").play();
-        //new GrooveGlide(Path.of("maps/Camellia - Clouds in the Blue (Asherz007)(m2g)"), "HARD").play();
-        //new GrooveGlide(Path.of("maps/Camellia - Embracing intelligences (Leniane)(m2g)"), "ACCEPTANCE").play();
-        //new GrooveGlide(Path.of("maps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play();
-        //new GrooveGlide(Path.of("/home/henr/Sync/Syncthing/Home/Studium/OOSE/Projekte/GrooveGlide/maps/Camellia - S.A.T.E.L.L.I.T.E. (Blocko)(m2g)"), "NORMAL").play();
-        //new GrooveGlide(Path.of("maps/Martin Garrix - Animals (DrawdeX)(m2g)"), "NM").play();
-        new GrooveGlide(Path.of("maps/Fukuhara Haruka - Kaze ni Fukarete (TV Size) (Sun)(m2g)"), "KEYTEST").play();
+        //new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON").play(); // Maps: "AFTERNOON", "DARKNESS"
+        //new GrooveGlide(Path.of("maps/Aiyru - Station (FAMoss)(m2g)"), "INSANE").play(); // Maps: "BEGINNER", "EASY", "NORMAL", "HARD", "INSANE"
+        //new GrooveGlide(Path.of("maps/Camellia - Clouds in the Blue (Asherz007)(m2g)"), "SKYWARD").play(); // Maps: "NORMAL", "HARD", "INSANE", "SKYWARD"
+        //new GrooveGlide(Path.of("maps/Camellia - Embracing intelligences (Leniane)(m2g)"), "HARD").play(); // Maps: "HARD", "ACCEPTANCE"
+        //new GrooveGlide(Path.of("maps/Various Artists - International Wrestling Festival 2015 -WORLD OF ANIKI- (Surono)(m2g)"), "DECADES MANIANIKI").play(); // Maps: "DECADES MANIKANI"
+        //new GrooveGlide(Path.of("maps/Martin Garrix - Animals (DrawdeX)(m2g)"), "MX").play(); // Maps: "NM", "HD", "MX"
+        //new GrooveGlide(Path.of("maps/Android52 - Super Anime Groove 3d World (Mastermile)(m2g)"), "HARD").play(); // Maps: "HARD"
+        //new GrooveGlide(Path.of("maps/boy pablo - wtf (Henri Henr)(m2g)"), "NORMAL").play(); // Maps: "EASY", "NORMAL"
+        //new GrooveGlide(Path.of("maps/Feint - We Won_t Be Alone (feat. Laura Brehm) (-NoName-)(m2g)"), "TOGETHER").play(); // Maps: "EASY", "NORMAL", "HARD", "TOGETHER"
+        new GrooveGlide(Path.of("maps/Panda Eyes _ Teminite - Highscore (Leniane)(m2g)"), "GAME OVER").play();
     }
-    
 }
