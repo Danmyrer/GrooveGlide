@@ -24,3 +24,6 @@ hs_err_pid*
 
 # beatmaps
 maps/*
+
+# binaries
+bin/*
