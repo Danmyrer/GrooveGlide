@@ -32,7 +32,7 @@ Osu! kann auch ohne Flatpak installiert werden. Informationen hierzu finden Sie 
 
 Um eine Beatmap zu exportieren muss sie im Bearbeitungsmodus geöffnet werden.
 
-![Map im Bearbeitungsmodus öffnen](/home/henri/Dokumente/OOSE/Projekte/GrooveGlide/doc/res/map_bearbeiten.png)
+![Map im Bearbeitungsmodus öffnen](https://github.com/Danmyrer/GrooveGlide/blob/35b38bfce713ee1da631ff46d46442a4ee8a69c1/doc/res/map_bearbeiten.png)
 
 > **ACHTUNG:** Folgende Bedingungen müssen für das erfolgreiche Konvertieren erfüllt sein:
 > 
@@ -44,7 +44,7 @@ Um eine Beatmap zu exportieren muss sie im Bearbeitungsmodus geöffnet werden.
 
 Im Editor kann nun unter  `Datei ➜ Export package` die gesamte Beatmap Exportiert werden.
 
-![Export Package](/home/henri/Dokumente/OOSE/Projekte/GrooveGlide/doc/res/export_map.png)
+![Export Package](https://github.com/Danmyrer/GrooveGlide/blob/35b38bfce713ee1da631ff46d46442a4ee8a69c1/doc/res/export_map.png)
 
 > Nach dem Exportieren sollte sich ein Fenster mit der Exportieren `.osz`-Datei öffnen. Wenn nicht kann die Datei im Installationsverzeichnis unter `export` gefunden werden.
 
@@ -52,7 +52,7 @@ Im Editor kann nun unter  `Datei ➜ Export package` die gesamte Beatmap Exporti
 
 Zuerst verschieben wir die exportierte Datei in das `convert`-Verzeichnis unter `ManiaConverter`
 
-![osz in convert](/home/henri/Dokumente/OOSE/Projekte/GrooveGlide/doc/res/osz_in_convert.png)
+![osz in convert](https://github.com/Danmyrer/GrooveGlide/blob/35b38bfce713ee1da631ff46d46442a4ee8a69c1/doc/res/osz_in_convert.png)
 
 Anschließend bennen wir die `.osz`-Datei in `.zip` um und Extrahieren den Ordner
 
@@ -72,6 +72,6 @@ Nun können wir die Datei endlich konvertieren.
 java -jar ManiaConverter.jar "Zutomayo - Darken (Henri Henr)"/
 ```
 
- ![convert_log](/home/henri/Dokumente/OOSE/Projekte/GrooveGlide/doc/res/convert_log.png)
+ ![convert_log](https://github.com/Danmyrer/GrooveGlide/blob/35b38bfce713ee1da631ff46d46442a4ee8a69c1/doc/res/convert_log.png)
 
 Der neu generierte Ordner endet auf `(m2g)` und kann wie eine gewöhnliche GrooveGlide-BeatMap in den Ordner `GrooveGlide/maps/` importiert werden.
