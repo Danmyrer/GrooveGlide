@@ -91,7 +91,7 @@ Wenn der Spieler alle Noten "überlebt" hat, gilt das Spiel als Gewonnen und wir
 
 ## Eigene Beatmaps und Charts erstllen
 
-Siehe ####
+Siehe [README - ManiaConverter](https://github.com/Danmyrer/GrooveGlide/blob/302617a722bc073975bcd72823869cf1b10a329f/doc/README%20-%20ManiaConverter.md)
 
 ## Quellen
 
