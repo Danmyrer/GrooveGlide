@@ -62,7 +62,7 @@ Da eine einzelne Beatmap hunderte oder auch tausende Noten beinhalten kann, wär
 
 Ein Rythmusspiel kann nicht ohne Beatmaps existieren. Daher ist es wichtig, den Erstellprozess von Beatmaps möglichst einfach zu gestalten. Da das Schreiben von purem Java-Code zu kompliziert wäre, habe ich für GrooveGlide das Erstellen durch eigene Dateiformate vereinfacht.
 
-<img src="file:///home/henri/Dokumente/OOSE/Projekte/GrooveGlide/doc/res/ordner.png" title="" alt="" data-align="center">
+![Bild der Ordnerstruktur](https://github.com/Danmyrer/GrooveGlide/blob/3d2c886abeeffcd6423636782062e005352aff17/doc/res/ordner.png)
 
 > Die Formate sind eigentlich selbsterklärend, einfach mal draufklicken und anschauen :)
 
