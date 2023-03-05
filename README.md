@@ -95,4 +95,4 @@ Siehe [README - ManiaConverter](https://github.com/Danmyrer/GrooveGlide/blob/302
 
 ## Quellen
 
-Siehe: ####
+Siehe: [README - Quellen](https://github.com/Danmyrer/GrooveGlide/blob/9609f5354c9ab4832372e3dc2c3e0a8646f0a550/doc/README%20-%20Quellen.md)
