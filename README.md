@@ -10,7 +10,7 @@
 
 ## Besonderheiten und Features
 
-Siehe: [README - Besonderheiten und Features](doc/README - Besonderheiten und Features.md)
+Siehe: [README - Besonderheiten und Features](https://github.com/Danmyrer/GrooveGlide/blob/3d2c886abeeffcd6423636782062e005352aff17/doc/README%20-%20Besonderheiten%20und%20Features.md)
 
 ## Installation
 
