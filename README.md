@@ -10,7 +10,7 @@
 
 ## Besonderheiten und Features
 
-Siehe:
+Siehe: [README - Besonderheiten und Features](doc/README - Besonderheiten und Features.md)
 
 ## Installation
 
@@ -65,11 +65,11 @@ Die Hitline kann mit den Tasten **D**, **F**, **J**, **K** an unterschiedlichen 
 Da das Spielfeld mehr Lanes als der Spieler Tasten hat, kann die Hitlane mit den Tasten **S** und **L** nach rechts und links geschoben werden.
 
 > Alternativ kann die Hitlane auch wie folgt verschoben werden:
->
+> 
 > 1. Leertaste drücken
->
+>    
 >    - D oder F drücken ➜ Links
->
+>    
 >    - J oder K drücken ➜ Rechts
 
 Statistiken wie Genauigkeit, Punktzahl, Combo, Health-Points, Verbleibende Noten können während und nach dem Gameplay im Terminal gelesen werden.
