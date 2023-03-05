@@ -10,7 +10,7 @@
 
 ## Besonderheiten und Features
 
-Mehr hierzu: 
+Siehe:
 
 ## Installation
 
@@ -50,7 +50,7 @@ new GrooveGlide(Path.of("maps/Zutomayo - Darken (Henri Henr)(m2g)"), "AFTERNOON"
 
 Durch das Starten der Main-Methode sollte das Spiel wie gewohnt starten.
 
-> Es sollte sich immer nur eine Map in der Main-Methode befinden. Der Rest kann einfach auskommentiert werden. 
+> Es sollte sich immer nur eine Map in der Main-Methode befinden. Der Rest kann einfach auskommentiert werden.
 
 ## Gameplay
 
@@ -65,11 +65,11 @@ Die Hitline kann mit den Tasten **D**, **F**, **J**, **K** an unterschiedlichen 
 Da das Spielfeld mehr Lanes als der Spieler Tasten hat, kann die Hitlane mit den Tasten **S** und **L** nach rechts und links geschoben werden.
 
 > Alternativ kann die Hitlane auch wie folgt verschoben werden:
-> 
+>
 > 1. Leertaste drücken
->    
+>
 >    - D oder F drücken ➜ Links
->    
+>
 >    - J oder K drücken ➜ Rechts
 
 Statistiken wie Genauigkeit, Punktzahl, Combo, Health-Points, Verbleibende Noten können während und nach dem Gameplay im Terminal gelesen werden.
@@ -91,4 +91,8 @@ Wenn der Spieler alle Noten "überlebt" hat, gilt das Spiel als Gewonnen und wir
 
 ## Eigene Beatmaps und Charts erstllen
 
-Mehr hierzu siehe ####
+Siehe ####
+
+## Quellen
+
+Siehe: ####
