@@ -24,6 +24,8 @@ hs_err_pid*
 
 # beatmaps
 maps/*
+!maps/Zutomayo - Darken (Henri Henr)(m2g)
+!maps/boy pablo - wtf (Henri Henr)(m2g)
 
 # binaries
 bin/*
