@@ -66,9 +66,9 @@ Ein Rythmusspiel kann nicht ohne Beatmaps existieren. Daher ist es wichtig, den 
 
 > Die Formate sind eigentlich selbsterklärend, einfach mal draufklicken und anschauen :)
 
-Ein visueller Editor wäre natürlich die Beste lösung, die Entwicklung würde aber den Rahmen dieses Projektes sprengen. Daher "leiht" sich GrooveGlide den Editor des Spiels **Osu!** 
+Ein visueller Editor wäre natürlich die Beste lösung, die Entwicklung würde aber den Rahmen dieses Projektes sprengen. Daher "leiht" sich GrooveGlide den Editor des Spiels **Osu!**
 
-[Osu!](https://osu.ppy.sh/home) ist ein Open-Source Rythmusspiel, das unter der Leitung von Dean „peppy“ Herbert entwickelt wird. Der Spielmodus Osu!Mania hat viele Parallelen zu GrooveGlide, weswegen durch die Nutzung meines Entwickelten ManiaConverters, eigene Maps einfacher de­signt werden können. Wie der ConverterGenutzt wird und was zu beachten ist finden sie [hier](./README - ManiaConverter.md).
+[Osu!](https://osu.ppy.sh/home) ist ein Open-Source Rythmusspiel, das unter der Leitung von Dean „peppy“ Herbert entwickelt wird. Der Spielmodus Osu!Mania hat viele Parallelen zu GrooveGlide, weswegen durch die Nutzung meines Entwickelten ManiaConverters, eigene Maps einfacher de­signt werden können. Wie der ConverterGenutzt wird und was zu beachten ist finden sie [hier](https://github.com/Danmyrer/GrooveGlide/blob/aff1114d0e2af7ef8a1c4c75eb7b5ba15c691d33/doc/README%20-%20ManiaConverter.md).
 
 Chart-Dateien sind für die Entwicklung von 4-Lane Charts gedacht, aber das Spielfeld selbst hat 6 Lanes. Daher wird alle 16-Beats zufällig bestimmt, ob - und wenn ja - in welche Richtung alle Noten verschoben werden sollen.
 
